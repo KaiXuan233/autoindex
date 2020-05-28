@@ -1,6 +1,7 @@
 var path = "/";
 var jsonUrl = "http://127.0.0.1:233"; //url for index json
 var json;
+var style = 0;
 
 function load() {
     print("path", path);
@@ -25,7 +26,7 @@ function cd(dir) {
 
 function ls(string) { //string为string格式的json数据
     json = JSON.parse(string); //把string解析为json
-    //TODO: 添加返回上级菜单
+    style = 0;
 
     var frame = document.getElementById("frame");
     var table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
@@ -110,8 +111,20 @@ function addRow(type, name, time, size) {
         td.innerHTML = size;
     }
     tr.appendChild(td);
+    tr = addStyle(tr);
     return tr;
 
+}
+
+function addStyle(a) {
+    if (style == 0) {
+        a.setAttribute("class", "style1");
+        style = 1;
+    } else if (style == 1) {
+        a.setAttribute("class", "style2");
+        style = 0;
+    }
+    return a;
 }
 
 function wget(url, callback) {
@@ -124,6 +137,8 @@ function wget(url, callback) {
         if (this.readyState == 4 && this.status == 200) {
             var x = Http.response;
             callback(x);
+        } else if (this.status == 403) {
+            callback("[]");
         }
     }
 }
