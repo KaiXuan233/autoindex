@@ -21,7 +21,7 @@ table {
     font-size: 1.2em;
     position: relative;
     margin-left: 20px;
-    width: 90%;
+    width: auto;
     padding: 0;
 }
 
@@ -55,4 +55,8 @@ td {
 .style2 {
     background-color: rgb(181, 233, 250);
     padding: 0;
+}
+
+.footer {
+    margin: 20px;
 }

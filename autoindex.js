@@ -32,6 +32,7 @@ function ls(string) { //string为string格式的json数据
     var table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
     frame.removeChild(table[0]); //删除原有<table>元素
     var table = document.createElement("TABLE"); //创建一个<table>元素
+    table.setAttribute("cellspacing", "0");
     frame.appendChild(table);
     var thead = document.createElement("THEAD"); //创建一个<thead>元素
     table.appendChild(thead);
