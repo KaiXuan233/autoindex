@@ -1,6 +1,6 @@
 var path = "/";
 var jsonUrl = "http://127.0.0.1:233"; //url for index json
-var json = "";
+var json;
 
 function load() {
     print("path", path);
@@ -8,13 +8,24 @@ function load() {
 }
 
 function cd(dir) {
-    path = `${path}${dir}/`;
+    if (dir == ".." && path != "/") {
+        x = path.split('/');
+        path = "";
+        for (var i = 0; i < x.length - 2; i ++) {
+            path += x[i] + "/";
+        }
+    } else if (dir == ".." && path == "/") {
+        path = "/";
+    } else {
+        path = `${path}${dir}/`;
+    }
     print("path", path);
     wget(`${jsonUrl}${path}`, ls);
 }
 
 function ls(string) { //string为string格式的json数据
     json = JSON.parse(string); //把string解析为json
+    //TODO: 添加返回上级菜单
 
     var frame = document.getElementById("frame");
     var table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
@@ -26,6 +37,7 @@ function ls(string) { //string为string格式的json数据
     thead.appendChild(addHead()); //添加表头
     var tbody = document.createElement("TBODY"); //创建一个<tbody>元素
     table.appendChild(tbody);
+    tbody.appendChild(addRow("directory", "..", "-", "-"));
     for (var i = 0; i < json.length; i++) {
         if (json[i].type == "directory") {
             tbody.appendChild(addRow(json[i].type, json[i].name, json[i].mtime, "-"));
@@ -40,18 +52,22 @@ function addHead() {
     var tr = document.createElement("TR");
     //type
     th.innerHTML = "Type";
+    th.setAttribute("id", "type");
     tr.appendChild(th);
     //name
     th = document.createElement("TH");
     th.innerHTML = "Name";
+    th.setAttribute("id", "name");
     tr.appendChild(th);
     //time
     th = document.createElement("TH");
     th.innerHTML = "Time";
+    th.setAttribute("id", "time");
     tr.appendChild(th);
     //size
     th = document.createElement("TH");
     th.innerHTML = "Size";
+    th.setAttribute("id", "size");
     tr.appendChild(th);
     return tr;
 }
