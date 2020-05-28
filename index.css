@@ -60,3 +60,17 @@ td {
 .footer {
     margin: 20px;
 }
+
+.search {
+    position: absolute;
+    left: 1;
+    right: 0;
+    top: 0;
+    bottom: 1;
+    margin-top: 20px;
+    margin-right: 60px;
+}
+
+.inputBox {
+    width: 300px;
+}
