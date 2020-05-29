@@ -1,18 +1,27 @@
-var path = "/";
-var jsonUrl = "http://127.0.0.1:233"; //url for index json
-var json;
-var style = 1;
+'use strict';
 
+let path = "/";
+let jsonUrl = "http://127.0.0.1:233"; //url for index json
+let json;
+let style = 1;
+
+/**
+ * Loads when <body> onload triggers.
+ */
 function load() {
     print("path", path);
     wget(`${jsonUrl}${path}`, ls);
 }
 
+/**
+ * Change directory(path) to a relative path.
+ * @param {string} dir 
+ */
 function cd(dir) {
     if (dir == ".." && path != "/") {
         x = path.split('/');
         path = "";
-        for (var i = 0; i < x.length - 2; i ++) {
+        for (let i = 0; i < x.length - 2; i++) {
             path += x[i] + "/";
         }
     } else if (dir == ".." && path == "/") {
@@ -24,26 +33,27 @@ function cd(dir) {
     wget(`${jsonUrl}${path}`, ls);
 }
 
+/**
+ * Receives json in string format, parse it, and print all the content in it on HTML.
+ * @param {string} string 
+ */
 function ls(string) { //string为string格式的json数据
     json = JSON.parse(string);
-
     //document.getElementById("debug").innerHTML = string;
-
     style = 1; //重置style
-
-    var frame = document.getElementById("frame");
-    var table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
+    let frame = document.getElementById("frame");
+    let table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
     frame.removeChild(table[0]); //删除原有<table>元素
-    var table = document.createElement("TABLE"); //创建一个<table>元素
+    let table = document.createElement("TABLE"); //创建一个<table>元素
     table.setAttribute("cellspacing", "0");
     frame.appendChild(table);
-    var thead = document.createElement("THEAD"); //创建一个<thead>元素
+    let thead = document.createElement("THEAD"); //创建一个<thead>元素
     table.appendChild(thead);
     thead.appendChild(addHead()); //添加表头
-    var tbody = document.createElement("TBODY"); //创建一个<tbody>元素
+    let tbody = document.createElement("TBODY"); //创建一个<tbody>元素
     table.appendChild(tbody);
     tbody.appendChild(addRow("directory", "..", "-", "-"));
-    for (var i = 0; i < json.length; i++) {
+    for (let i = 0; i < json.length; i++) {
         if (json[i].type == "directory") {
             tbody.appendChild(addRow(json[i].type, json[i].name, json[i].mtime, "-"));
         } else if (json[i].type == "file") {
@@ -54,9 +64,12 @@ function ls(string) { //string为string格式的json数据
     json = JSON.parse("");
 }
 
+/**
+ * Prints a row of <thead>.
+ */
 function addHead() {
-    var th = document.createElement("TH");
-    var tr = document.createElement("TR");
+    let th = document.createElement("TH");
+    let tr = document.createElement("TR");
     //type
     th.innerHTML = "Type";
     th.setAttribute("id", "type");
@@ -79,9 +92,16 @@ function addHead() {
     return tr;
 }
 
+/**
+ * Prints a row of information of files or directories.
+ * @param {string} type 
+ * @param {string} name 
+ * @param {string} time 
+ * @param {string} size 
+ */
 function addRow(type, name, time, size) {
-    var tr = document.createElement("TR");
-    var td = document.createElement("TD");
+    let tr = document.createElement("TR");
+    let td = document.createElement("TD");
     //type
     if (type == "directory") {
         td.innerHTML = "Directory";
@@ -94,7 +114,7 @@ function addRow(type, name, time, size) {
     //name
     td = document.createElement("TD");
     tr.appendChild(td);
-    var a = document.createElement("A");
+    let a = document.createElement("A");
     if (type == "directory") {
         a.setAttribute("href", "#");
         a.setAttribute("onclick", `cd("${name}")`);
@@ -122,6 +142,10 @@ function addRow(type, name, time, size) {
 
 }
 
+/**
+ * Setting class for HTML elements.
+ * @param {Element} a 
+ */
 function addStyle(a) {
     if (style == 0) {
         a.setAttribute("class", "style1");
@@ -133,15 +157,20 @@ function addStyle(a) {
     return a;
 }
 
+/**
+ * Sending GET http requests.
+ * @param {string} url 
+ * @param {function} callback 
+ */
 function wget(url, callback) {
-    var Http = new XMLHttpRequest(); //创建http请求
+    let Http = new XMLHttpRequest(); //创建http请求
     Http.timeout = 3000;
     Http.open("GET", url, true);
     Http.responseType = "text";
     Http.send();
     Http.onload = function () {
         if (this.readyState == 4 && this.status == 200) {
-            var x = Http.response;
+            let x = Http.response;
             callback(x);
         } else if (this.status == 403) {
             callback("[]");
@@ -149,18 +178,28 @@ function wget(url, callback) {
     }
 }
 
+/**
+ * Translate file size in byte to human readable units. 
+ * @param {number} size 
+ * @returns {number} result
+ */
 function humanSize(size) {
     const unit = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
     const standard = 1024;
-    var modTimes = 0;
+    let modTimes = 0;
     while (size > standard) {
         size /= standard;
         modTimes += 1;
     }
-    result = (Math.round(size * 100))/100 + unit[modTimes];
+    result = (Math.round(size * 100)) / 100 + unit[modTimes];
     return result;
 }
 
+/**
+ * Just an alias.
+ * @param {string} id 
+ * @param {string} content 
+ */
 function print(id, content) {
     document.getElementById(id).innerHTML = content;
 }
