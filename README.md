@@ -5,20 +5,19 @@ It parses the json provided by nginx and makes a GUI with HTML and CSS.
 ## Usage:
 1. Config nginx to turn on autoindex
     example nginx.conf:
+    
     ```conf
-    server {
+	server {
 		listen 233; #any port you like
-		charset utf-8;
-
+	charset utf-8; #avoiding encoding problems
+	
 		location / {
 			root /;
 			autoindex on;
 			autoindex_format json;
 			
-			#code from http://blog.minws.com/archives/614
-			#解决中文乱码
-			add_header Content-Type 'text/html; charset=utf-8';
-
+		add_header Content-Type 'text/html; charset=utf-8'; #avoiding encoding problems
+	
 			#code from https://segmentfault.com/a/1190000012550346
 			#解决无法跨域
 			add_header Access-Control-Allow-Origin *;
@@ -28,14 +27,19 @@ It parses the json provided by nginx and makes a GUI with HTML and CSS.
 				return 204;
 			}
 		}
-	}
+    }
     ```
-    Note: `add_header` options are for solving CORS security issues. They are needed for autoindex to work properly.
-
+	Note: 
+	* `autoindex_format json;` is for nginx to autoindex in json format.
+	
+* `add_header` options are for solving CORS security issues. 
+    
+      They are needed for autoindex to work properly.
+    
 2. Download files(`$ git clone` or download straightly from github) and put them under your webpage folder.
 3. Edit `autoindex.js`: find this line (autoindex.js:2):
     ```javascript
     var jsonUrl = "var jsonUrl = "http://127.0.0.1:233"; //url for index json";
     ```
-    then change `http://127.0.0.1:233` to your ip and port.
+    then change `http://127.0.0.1:233` to your ip(domain or public ip) and port(you set in nginx).
 4. Then you are good to go!

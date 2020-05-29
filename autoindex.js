@@ -1,7 +1,7 @@
 var path = "/";
 var jsonUrl = "http://127.0.0.1:233"; //url for index json
 var json;
-var style = 0;
+var style = 1;
 
 function load() {
     print("path", path);
@@ -25,8 +25,11 @@ function cd(dir) {
 }
 
 function ls(string) { //string为string格式的json数据
-    json = JSON.parse(string); //把string解析为json
-    style = 0;
+    json = JSON.parse(string);
+
+    //document.getElementById("debug").innerHTML = string;
+
+    style = 1; //重置style
 
     var frame = document.getElementById("frame");
     var table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
@@ -47,6 +50,8 @@ function ls(string) { //string为string格式的json数据
             tbody.appendChild(addRow(json[i].type, json[i].name, json[i].mtime, json[i].size));
         }
     }
+
+    json = JSON.parse("");
 }
 
 function addHead() {
