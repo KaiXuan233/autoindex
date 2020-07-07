@@ -16,7 +16,7 @@ It parses the json provided by nginx and makes a GUI with HTML and CSS.
 			autoindex on;
 			autoindex_format json;
 			
-		add_header Content-Type 'text/html; charset=utf-8'; #avoiding encoding problems
+			add_header Content-Type 'text/html; charset=utf-8'; #avoiding encoding problems
 	
 			#code from https://segmentfault.com/a/1190000012550346
 			#解决无法跨域
@@ -31,13 +31,11 @@ It parses the json provided by nginx and makes a GUI with HTML and CSS.
     ```
 	Note: 
 	* `autoindex_format json;` is for nginx to autoindex in json format.
-	
-* `add_header` options are for solving CORS security issues. 
-    
-      They are needed for autoindex to work properly.
-    
+	* `add_header` options are for solving CORS security issues.  
+	They are needed for autoindex to work properly.
 2. Download files(`$ git clone` or download straightly from github) and put them under your webpage folder.
 3. Edit `autoindex.js`: find this line (autoindex.js:2):
+
     ```javascript
     var jsonUrl = "var jsonUrl = "http://127.0.0.1:233"; //url for index json";
     ```
