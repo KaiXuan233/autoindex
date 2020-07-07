@@ -9,7 +9,7 @@ It parses the json provided by nginx and makes a GUI with HTML and CSS.
     ```conf
 	server {
 		listen 233; #any port you like
-	charset utf-8; #avoiding encoding problems
+		charset utf-8; #avoiding encoding problems
 	
 		location / {
 			root /;
