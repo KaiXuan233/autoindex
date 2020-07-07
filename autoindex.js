@@ -19,7 +19,7 @@ function load() {
  */
 function cd(dir) {
     if (dir == ".." && path != "/") {
-        x = path.split('/');
+        let x = path.split('/');
         path = "";
         for (let i = 0; i < x.length - 2; i++) {
             path += x[i] + "/";
@@ -44,7 +44,7 @@ function ls(string) { //string为string格式的json数据
     let frame = document.getElementById("frame");
     let table = document.getElementsByTagName("TABLE"); //找到原有<table>元素
     frame.removeChild(table[0]); //删除原有<table>元素
-    let table = document.createElement("TABLE"); //创建一个<table>元素
+    table = document.createElement("TABLE"); //创建一个<table>元素
     table.setAttribute("cellspacing", "0");
     frame.appendChild(table);
     let thead = document.createElement("THEAD"); //创建一个<thead>元素
@@ -191,7 +191,7 @@ function humanSize(size) {
         size /= standard;
         modTimes += 1;
     }
-    result = (Math.round(size * 100)) / 100 + unit[modTimes];
+    let result = (Math.round(size * 100)) / 100 + unit[modTimes];
     return result;
 }
 
